@@ -94,7 +94,7 @@ public class ConfigLoaderImpl {
 
     private static void buildProperty(JsonObject builder, PropertyData data) throws IllegalAccessException {
         AnnotationData annotationData = data.data();
-        builder.addProperty(data.getId() +"_comment", annotationData.description());
+        builder.addProperty("//"+data.getId(), annotationData.description());
 
         switch (annotationData.type()) {
             case BOOLEAN -> builder.addProperty(data.getId(), data.getBoolean());
