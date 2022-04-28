@@ -37,40 +37,41 @@ public class ConfigLoaderImpl {
     private static JsonObject loadConfig(BuiltCategory category, JsonObject config) {
         config.entrySet().forEach((entry) -> {
             String id = entry.getKey();
-            JsonElement value = entry.getValue();
-            if (value instanceof JsonPrimitive configValue) {
-                category.getProperty(id).ifPresent(data -> {
-                    if (configValue.isBoolean() && data.data().type().equals(PropertyType.BOOLEAN))
-                        data.setBoolean(configValue.getAsBoolean());
-                    if (configValue.isNumber() && data.data().type().equals(PropertyType.INT)) {
-                        int configInt = configValue.getAsInt();
-                        if (configInt > data.data().max() || configInt < data.data().min()) {
-                            try { config.addProperty(id, data.getInt()); } catch (IllegalAccessException ignored) {}
-                        } else {
-                            data.setInt(configInt);
+            if (!id.startsWith("//")) {
+                JsonElement value = entry.getValue();
+                if (value instanceof JsonPrimitive configValue) {
+                    category.getProperty(id).ifPresent(data -> {
+                        if (configValue.isBoolean() && data.data().type().equals(PropertyType.BOOLEAN))
+                            data.setBoolean(configValue.getAsBoolean());
+                        if (configValue.isNumber() && data.data().type().equals(PropertyType.INT)) {
+                            int configInt = configValue.getAsInt();
+                            if (configInt > data.data().max() || configInt < data.data().min()) {
+                                try {
+                                    config.addProperty(id, data.getInt());
+                                } catch (IllegalAccessException ignored) {
+                                }
+                            } else {
+                                data.setInt(configInt);
+                            }
                         }
-                    }
-                    if (configValue.isNumber() && data.data().type().equals(PropertyType.DOUBLE)) {
-                        double configDouble = configValue.getAsDouble();
-                        if (configDouble > data.data().maxD() || configDouble < data.data().minD()) {
-                            try { config.addProperty(id, data.getDouble()); } catch (IllegalAccessException ignored) {}
-                        } else {
-                            data.setDouble(configDouble);
+                        if (configValue.isNumber() && data.data().type().equals(PropertyType.DOUBLE)) {
+                            double configDouble = configValue.getAsDouble();
+                            if (configDouble > data.data().maxD() || configDouble < data.data().minD()) {
+                                try {
+                                    config.addProperty(id, data.getDouble());
+                                } catch (IllegalAccessException ignored) {
+                                }
+                            } else {
+                                data.setDouble(configDouble);
+                            }
                         }
-                    }
-                });
-            } else if (value instanceof JsonObject subConfig) {
-                category.getCategory(id).ifPresent(cat -> loadConfig(cat, subConfig));
+                    });
+                } else if (value instanceof JsonObject subConfig) {
+                    category.getCategory(id).ifPresent(cat -> loadConfig(cat, subConfig));
+                }
             }
         });
         return config;
-    }
-
-    private static BuiltConfig getConfig(String id) {
-        return CONFIGS.values().stream()
-                .filter(config -> config.fileName.equals(id))
-                .findFirst()
-                .orElse(null);
     }
 
     public static void registerConfig(BuiltConfig config) {
