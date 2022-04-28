@@ -86,7 +86,7 @@ public class ConfigLoaderImpl {
 
     private static void buildCategory(JsonObject builder, BuiltCategory category) throws IllegalAccessException {
         JsonObject categoryJson = new JsonObject();
-        if (category.categoryDesc != null) categoryJson.addProperty(category.category +"_comment", category.categoryDesc);
+        if (category.categoryDesc != null) categoryJson.addProperty("//"+category.category, category.categoryDesc);
         for (PropertyData property : category.properties) buildProperty(categoryJson, property);
         for (BuiltCategory builtCategory : category.categories) buildCategory(categoryJson, builtCategory);
         builder.add(category.category, categoryJson);
