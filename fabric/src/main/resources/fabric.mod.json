@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "exampleconfig",
+  "version": "${version}",
+  "name": "Example Config",
+  "description": "This is an example config mod to show multi-config",
+  "authors": [
+    "ThatGravyBoat"
+  ],
+  "license": "GPL-3",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "tech.thatgravyboat.exampleconfig.fabric.ExampleModFabric"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.2"
+  }
+}

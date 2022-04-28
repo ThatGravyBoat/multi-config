@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[40,)"
+license = "GPL-3"
+
+[[mods]]
+    modId = "exampleconfig"
+    version = "${version}"
+    displayName = "Example Config"
+    authors = "ThatGravyBoat"
+    description = "This is an example config mod to show multi-config"
+
+[[dependencies.example-config]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[40,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.example-config]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.18.2,)"
+    ordering = "NONE"
+    side = "BOTH"
